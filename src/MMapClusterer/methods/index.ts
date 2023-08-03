@@ -1,0 +1,1 @@
+export {clusterByGrid} from './clusterByGrid';

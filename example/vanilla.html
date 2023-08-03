@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Vanila example @mappable-world/mappable-clusterer</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+        <script src="https://js.api.mappable.world/3.0/?apikey=%APIKEY%&lang=en_US"></script>
+        <script src="common.js"></script>
+        <script>
+            window.map = null;
+
+            main();
+            async function main() {
+                await mappable.ready;
+                const {MMap, MMapDefaultSchemeLayer, MMapLayer, MMapFeatureDataSource} = mappable;
+
+                const {MMapClusterer, clusterByGrid} = await mappable.import('@mappable-world/mappable-clusterer@0.0.1');
+
+                map = new MMap(document.getElementById('app'), {location: LOCATION});
+                map.addChild(new MMapDefaultSchemeLayer())
+                    .addChild(new MMapFeatureDataSource({id: 'clusterer-source'}))
+                    .addChild(new MMapLayer({source: 'clusterer-source', type: 'markers', zIndex: 1800}));
+
+                const contentPin = document.createElement('div');
+                contentPin.innerHTML = '<img src="./pin.svg" class="pin">';
+
+                const marker = (feature) =>
+                    new mappable.MMapMarker(
+                        {
+                            coordinates: feature.geometry.coordinates,
+                            source: 'clusterer-source'
+                        },
+                        contentPin.cloneNode(true)
+                    );
+
+                const cluster = (coordinates, features) =>
+                    new mappable.MMapMarker(
+                        {
+                            coordinates,
+                            source: 'clusterer-source'
+                        },
+                        circle(features.length).cloneNode(true)
+                    );
+
+                function circle(count) {
+                    const circle = document.createElement('div');
+                    circle.classList.add('circle');
+                    circle.innerHTML = `
+                    <div class="circle-content">
+                        <span class="circle-text">${count}</span>
+                    </div>
+                `;
+                    return circle;
+                }
+
+                const clusterer = new MMapClusterer({
+                    method: clusterByGrid({gridSize: 64}),
+                    features: getRandomPoints(100, BOUNDS),
+                    marker,
+                    cluster
+                });
+
+                map.addChild(clusterer);
+
+                function updatePoints() {
+                    clusterer.update({features: getRandomPoints(pointsCount.value || rndNum(), map.bounds)});
+                }
+
+                function toggleClusterer() {
+                    if (clusterer.parent) {
+                        map.removeChild(clusterer);
+                    } else {
+                        map.addChild(clusterer);
+                    }
+                }
+
+                changePoints.onclick = updatePoints;
+                changeClusterer.onclick = toggleClusterer;
+            }
+        </script>
+
+        <link rel="stylesheet" href="common.css" />
+    </head>
+    <body>
+        <div class="toolbar">
+            <input id="pointsCount" value="100" placeholder="Count" />
+            <button type="button" id="changePoints">Update points</button>
+            <button type="button" id="changeClusterer">Delete/Add Clusterer</button>
+        </div>
+        <div id="app"></div>
+    </body>
+</html>
