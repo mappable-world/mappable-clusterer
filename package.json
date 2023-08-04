@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1-beta.9",
+  "version": "0.0.1-beta.10",
   "name": "@mappable-world/mappable-clusterer",
   "description": "Mappable Maps JS API 3.0 @mappable-world/mappable-clusterer",
   "types": "./dist/types/index.d.ts",
@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/mappable-world/mappable-clusterer.git"
   },
+  "homepage": "https://github.com/mappable-world/mappable-clusterer",
   "scripts": {
     "test": "jest",
     "lint": "eslint ./",
