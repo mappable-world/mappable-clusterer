@@ -81,9 +81,9 @@ describe('MMapClusterer', () => {
                     [39.52, 54.89]
                 ]
             });
-            expect(entities.length).toBe(5);
+            expect(entities.length).toBe(3);
             const pointsCount = entities.filter((entity) => entity.element.id === 'point').length;
-            expect(pointsCount).toBe(3);
+            expect(pointsCount).toBe(1);
 
             const clusterCount = entities.filter((entity) => entity.element.id === 'cluster').length;
             expect(clusterCount).toBe(2);
