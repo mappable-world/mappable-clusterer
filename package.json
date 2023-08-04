@@ -1,5 +1,5 @@
 {
-    "version": "0.0.1-beta.1",
+    "version": "0.0.1-beta.2",
     "name": "@mappable-world/mappable-clusterer",
     "description": "Mappable Maps JS API 3.0 example @mappable-world/mappable-clusterer",
     "types": "./dist/types/index.d.ts",
@@ -17,8 +17,7 @@
         "bump:git": "git add --all && git commit -m \"New version $npm_package_version\" && git tag $npm_package_version && git push --tags origin HEAD:main"
     },
     "devDependencies": {
-        "html-webpack-plugin": "^5.5.3",
-        "@mappable-world/mappable-cli": "^0.0.1-beta.38",
+        "@mappable-world/mappable-cli": "^0.0.1-beta.39",
         "@mappable-world/mappable-types": "^0.0.4",
         "@types/got": "9.6.12",
         "@types/jest": "29.5.3",
@@ -34,6 +33,7 @@
         "eslint-config-prettier": "8.8.0",
         "eslint-plugin-prettier": "4.2.1",
         "got": "11.8.6",
+        "html-webpack-plugin": "^5.5.3",
         "identity-obj-proxy": "3.0.0",
         "jest": "29.6.1",
         "jsdom": "22.1.0",
