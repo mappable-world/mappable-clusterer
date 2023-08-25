@@ -36,7 +36,7 @@ import type {MMapClusterer as MMapClustererI, MMapClustererProps} from '../MMapC
  * ```
  */
 
-type MMapClustererReactifiedProps = MMapClustererProps & {
+type MMapClustererReactifiedProps = Omit<MMapClustererProps, 'marker' | 'cluster'> & {
     /** Function that returns MMapMarker react component to render marker*/
     marker: (feature: Feature) => TReact.ReactElement;
     /** Function that returns MMapMarker react component to render cluster*/
@@ -69,7 +69,6 @@ export const MMapClustererReactifyOverride: CustomReactify<MMapClustererI, MMapC
                     clusters.forEach(({lnglat, features, clusterId}) => {
                         reactClusters[clusterId] = (
                             <React.Fragment key={clusterId}>
-                                {/* @ts-ignore */}
                                 {features.length === 1
                                     ? props.marker(features[0])
                                     : props.cluster(lnglat as LngLat, features)}

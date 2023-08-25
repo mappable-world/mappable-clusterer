@@ -56,7 +56,6 @@ const defaultProps = Object.freeze({
  */
 class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, DefaultProps> {
     static defaultProps = defaultProps;
-    /** @internal */
     static [mappable.overrideKeyReactify] = MMapClustererReactifyOverride;
 
     /** All created entities with cluster id*/
