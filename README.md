@@ -6,6 +6,8 @@ Using the clusterer helps to display a large number of markers on the map.
 When the scale of the map is increased, individual markers are combined into a cluster;
 when the map is scaled down, the cluster breaks up into individual markers.
 
+- [GitHub](https://github.com/mappable-world/mappable-clusterer)
+
 [![npm version](https://badge.fury.io/js/@mappable-world%2Fmappable-clusterer.svg)](https://www.npmjs.com/package/@mappable-world/mappable-clusterer)
 [![npm](https://img.shields.io/npm/dm/@mappable-world/mappable-clusterer.svg)](https://www.npmjs.com/package/@mappable-world/mappable-clusterer)
 [![Build Status](https://github.com/mappable-world/mappable-clusterer/workflows/Run%20tests/badge.svg)](https://github.com/mappable-world/mappable-clusterer/actions/workflows/tests.yml)
