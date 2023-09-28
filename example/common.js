@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 mappable.import.loaders.unshift(async (pkg) => {
-    if (!pkg.includes('@mappable-world/mappable-clusterer')) {
+    if (!pkg.startsWith('@mappable-world/mappable-clusterer')) {
         return;
     }
 

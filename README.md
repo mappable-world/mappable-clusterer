@@ -24,7 +24,7 @@ to use Mappable JS Module you need to add your module loading handler to JS API
 
 ```js
 mappable.import.loaders.unshift(async (pkg) => {
-  if (!pkg.includes('@mappable-world/mappable-clusterer')) {
+  if (!pkg.startsWith('@mappable-world/mappable-clusterer')) {
     return;
   }
 
