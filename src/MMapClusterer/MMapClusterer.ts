@@ -1,9 +1,9 @@
-import type {MMapEntity, MMapCollection, MMapListener} from '@mappable-world/mappable-types';
-import type {LngLat, LngLatBounds, Projection} from '@mappable-world/mappable-types/common/types';
+import type {MMapEntity, MMapCollection, MMapListener, LngLat} from '@mappable-world/mappable-types';
+
+import throttle from 'lodash/throttle';
 
 import type {ClustererObject, EntitiesMap, Feature, IClusterMethod} from './interface';
 import {THROTTLE_DEFAULT_TIMEOUT_MS} from './constants';
-import {throttle} from './helpers/throttle';
 import {MMapClustererReactifyOverride} from './react/MMapClusterer';
 
 /**
@@ -33,7 +33,6 @@ const defaultProps = Object.freeze({
 /**
  * Display clustered features on a map.
  *
- * @example
  * ```javascript
  * const clusterer = new MMapClusterer({
  *      method: clusterByGrid({gridSize: 64}),
@@ -68,31 +67,13 @@ class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, Defau
     private _mapListener!: MMapListener;
 
     constructor(props: MMapClustererProps) {
-        super(props);
+        super(props, {container: true});
         this._render = this._render.bind(this);
-    }
-
-    /**
-     * Compare feature coordinates with bounds
-     *
-     * @param feature
-     * @param bounds
-     * @param projection
-     * @returns either feature belongs to viewport or not
-     */
-    private _isVisible(feature: Feature, bounds: LngLatBounds, projection: Projection): boolean {
-        const {x, y} = projection.toWorldCoordinates(feature.geometry.coordinates as LngLat);
-        const {x: x1, y: y1} = projection.toWorldCoordinates(bounds[0]);
-        const {x: x2, y: y2} = projection.toWorldCoordinates(bounds[1]);
-        return x1 <= x && y1 >= y && x2 >= x && y2 <= y;
     }
 
     /**
      * Get entity from store or create it
      *
-     * @param feature
-     * @param entityId
-     * @param length count of entities in the cluster
      * @returns ready to add to map entity
      */
     private _getEntity({lnglat, features, clusterId: entityId}: ClustererObject): MMapEntity<unknown> {
@@ -120,8 +101,7 @@ class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, Defau
         const nextVisibleEntities: EntitiesMap = {};
 
         nextViewportObjects.forEach((object: ClustererObject) => {
-            const entity = this._getEntity(object);
-            nextVisibleEntities[object.clusterId] = entity;
+            nextVisibleEntities[object.clusterId] = this._getEntity(object);
         });
 
         return nextVisibleEntities;
@@ -146,18 +126,16 @@ class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, Defau
         }
     }
 
-    private _render({mapInAction}: {mapInAction?: boolean} = {}): void {
+    private _render(): void {
         const map = this.root;
 
-        if (!map || mapInAction) return;
+        if (!map) return;
 
-        const visibleFeatures = this._props.features.filter((feature) =>
-            this._isVisible(feature, map.bounds, map.projection)
-        );
+        const {features} = this._props;
 
         const nextViewportObjects = this._props.method.render({
             map,
-            features: visibleFeatures
+            features: features
         });
 
         if (this._props.onRender && this._props.onRender(nextViewportObjects) === false) {
@@ -178,18 +156,18 @@ class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, Defau
         this._visibleEntities = {};
 
         this._container = new mappable.MMapCollection({});
-        this.addChild(this._container);
+        this._addDirectChild(this._container);
 
         const onUpdateRender = this._props.tickTimeout ? throttle(this._render, this._props.tickTimeout) : this._render;
         this._mapListener = new mappable.MMapListener({onUpdate: onUpdateRender, onResize: onUpdateRender});
-        this.addChild(this._mapListener);
+        this._addDirectChild(this._mapListener);
 
         this._render();
     }
 
     protected _onDetach(): void {
-        this.removeChild(this._container);
-        this.removeChild(this._mapListener);
+        this._removeDirectChild(this._container);
+        this._removeDirectChild(this._mapListener);
 
         this._entitiesCache = {};
         this._visibleEntities = {};

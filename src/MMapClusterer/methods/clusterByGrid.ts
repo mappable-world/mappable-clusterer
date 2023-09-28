@@ -1,8 +1,8 @@
-import type {LngLat, WorldCoordinates, PixelCoordinates} from '@mappable-world/mappable-types/common/types';
-import type {MMap} from '@mappable-world/mappable-types';
+import type {LngLat, WorldCoordinates, PixelCoordinates, Projection} from '@mappable-world/mappable-types';
 
 import type {IClusterMethod, ClustererObject, ClustersCollection, RenderProps, Feature} from '../interface';
 import {convertPixelSizeToWorldSize, divn} from "../helpers/utils";
+import {DEFAULT_SCREEN_OFFSET} from "../constants";
 
 class ClusterByGridMethod implements IClusterMethod {
     private _gridSize: number;
@@ -23,10 +23,13 @@ class ClusterByGridMethod implements IClusterMethod {
         center: WorldCoordinates
     ): Map<string, boolean> {
         const halfViewportSize = divn(convertPixelSizeToWorldSize(size, targetZoom), 2);
-        const top = center.y + halfViewportSize.y;
-        const bottom = center.y - halfViewportSize.y;
-        const left = center.x - halfViewportSize.x;
-        const right = center.x + halfViewportSize.x;
+
+        const offset = convertPixelSizeToWorldSize({x: DEFAULT_SCREEN_OFFSET, y: 0}, targetZoom).x
+
+        const top = center.y + halfViewportSize.y - offset;
+        const bottom = center.y - halfViewportSize.y + offset;
+        const left = center.x - halfViewportSize.x - offset;
+        const right = center.x + halfViewportSize.x + offset;
 
         const clusterSize = this._getClusterSizeWorld(targetZoom);
 
@@ -45,13 +48,13 @@ class ClusterByGridMethod implements IClusterMethod {
         return result;
     }
 
-    private _clusterize(map: MMap, features: Feature[], targetZoom: number): ClustersCollection {
+    private _clusterize(projection: Projection, features: Feature[], targetZoom: number): ClustersCollection {
         const clusters: ClustersCollection = new Map();
         const clusterSize = this._getClusterSizeWorld(targetZoom);
 
         for (const feature of features) {
             const object = {
-                world: map.projection.toWorldCoordinates(feature.geometry.coordinates as LngLat),
+                world: projection.toWorldCoordinates(feature.geometry.coordinates as LngLat),
                 lnglat: feature.geometry.coordinates as LngLat,
                 clusterId: '',
                 features: [feature]
@@ -98,7 +101,7 @@ class ClusterByGridMethod implements IClusterMethod {
             map.projection.toWorldCoordinates(map.center as LngLat)
         );
 
-        const currentCollection = this._clusterize(map, features, targetZoom);
+        const currentCollection = this._clusterize(map.projection, features, targetZoom);
 
         const nextViewportObjects: ClustererObject[] = [];
 

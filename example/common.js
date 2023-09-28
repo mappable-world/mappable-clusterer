@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 mappable.import.loaders.unshift(async (pkg) => {
     if (!pkg.includes('@mappable-world/mappable-clusterer')) {
         return;
@@ -9,8 +11,8 @@ mappable.import.loaders.unshift(async (pkg) => {
         await mappable.import.script(`https://unpkg.com/${pkg}/dist/index.js`);
     }
 
-    Object.assign(mappable, window[`${pkg}`]);
-    return window[`${pkg}`];
+    Object.assign(mappable, window[`@mappable-world/mappable-clusterer`]);
+    return window[`@mappable-world/mappable-clusterer`];
 });
 
 const BOUNDS = [
@@ -18,8 +20,8 @@ const BOUNDS = [
     [-73.79379690161176, 40.676480480724436]
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LOCATION = {bounds: BOUNDS};
+const DEFAULT_POINTS_COUNT = 4000;
 
 const seed = (s) => () => {
     s = Math.sin(s) * 10000;

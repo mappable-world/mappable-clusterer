@@ -36,9 +36,10 @@ body,
 
 .circle {
     position: relative;
+    display: inline-block;
 
-    width: var(--radius, 20px);
-    height: var(--radius, 20px);
+    width: fit-content;
+    aspect-ratio: 1;
 
     color: #8a64eb;
     border: 2px solid currentColor;
@@ -46,24 +47,22 @@ body,
     background-color: rgba(255, 255, 255, 0.7);
 
     transform: translate(-50%, -50%);
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .circle-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 70%;
-    height: 70%;
 
     border-radius: 50%;
     background-color: currentColor;
 
-    transform: translate3d(-50%, -50%, 0);
+    min-width: 16px;
+    aspect-ratio: 1;
+    padding: 5px;
 }
 
 .circle-text {

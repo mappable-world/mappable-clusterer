@@ -14,7 +14,9 @@
                 await mappable.ready;
                 const {MMap, MMapDefaultSchemeLayer, MMapLayer, MMapFeatureDataSource} = mappable;
 
-                const {MMapClusterer, clusterByGrid} = await mappable.import('@mappable-world/mappable-clusterer@0.0.1');
+                const {MMapClusterer, clusterByGrid} = await mappable.import(
+                    '@mappable-world/mappable-clusterer@0.0.1'
+                );
 
                 map = new MMap(document.getElementById('app'), {location: LOCATION});
                 map.addChild(new MMapDefaultSchemeLayer())
@@ -55,7 +57,7 @@
 
                 const clusterer = new MMapClusterer({
                     method: clusterByGrid({gridSize: 64}),
-                    features: getRandomPoints(100, BOUNDS),
+                    features: getRandomPoints(DEFAULT_POINTS_COUNT, BOUNDS),
                     marker,
                     cluster
                 });
@@ -76,6 +78,8 @@
 
                 changePoints.onclick = updatePoints;
                 changeClusterer.onclick = toggleClusterer;
+
+                pointsCount.value = DEFAULT_POINTS_COUNT;
             }
         </script>
 
