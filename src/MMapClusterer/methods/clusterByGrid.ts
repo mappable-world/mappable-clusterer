@@ -2,7 +2,6 @@ import type {LngLat, WorldCoordinates, PixelCoordinates, Projection} from '@mapp
 
 import type {IClusterMethod, ClustererObject, ClustersCollection, RenderProps, Feature} from '../interface';
 import {convertPixelSizeToWorldSize, divn} from "../helpers/utils";
-import {DEFAULT_SCREEN_OFFSET} from "../constants";
 
 class ClusterByGridMethod implements IClusterMethod {
     private _gridSize: number;
@@ -24,14 +23,14 @@ class ClusterByGridMethod implements IClusterMethod {
     ): Map<string, boolean> {
         const halfViewportSize = divn(convertPixelSizeToWorldSize(size, targetZoom), 2);
 
-        const offset = convertPixelSizeToWorldSize({x: DEFAULT_SCREEN_OFFSET, y: 0}, targetZoom).x
+        const clusterSize = this._getClusterSizeWorld(targetZoom);
+        const offset = clusterSize * 2;
 
         const top = center.y + halfViewportSize.y - offset;
         const bottom = center.y - halfViewportSize.y + offset;
         const left = center.x - halfViewportSize.x - offset;
         const right = center.x + halfViewportSize.x + offset;
 
-        const clusterSize = this._getClusterSizeWorld(targetZoom);
 
         const minBucketX = Math.floor(left / clusterSize);
         const maxBucketX = Math.ceil(right / clusterSize);

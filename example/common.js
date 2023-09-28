@@ -22,6 +22,7 @@ const BOUNDS = [
 
 const LOCATION = {bounds: BOUNDS};
 const DEFAULT_POINTS_COUNT = 4000;
+const CLUSTER_SIZE = 128;
 
 const seed = (s) => () => {
     s = Math.sin(s) * 10000;

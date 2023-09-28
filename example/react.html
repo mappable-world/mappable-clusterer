@@ -28,7 +28,7 @@
                 const {MMapClusterer, clusterByGrid} = reactify.module(await mappable.import("@mappable-world/mappable-clusterer@0.0.1"));
                 const {useState, useCallback, useMemo} = React;
                 const initialPoints = getRandomPoints(DEFAULT_POINTS_COUNT, BOUNDS);
-                const gridSizedMethod = clusterByGrid({gridSize: 64})
+                const gridSizedMethod = clusterByGrid({gridSize: CLUSTER_SIZE})
 
                 function App() {
                     const [clusterer, setClusterer] = useState(true);

@@ -1,3 +1,1 @@
 export const THROTTLE_DEFAULT_TIMEOUT_MS = 300;
-export const DEFAULT_SCREEN_OFFSET = 256;
-
