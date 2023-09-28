@@ -11,7 +11,6 @@ mappable.import.loaders.unshift(async (pkg) => {
         await mappable.import.script(`https://unpkg.com/${pkg}/dist/index.js`);
     }
 
-    Object.assign(mappable, window[`@mappable-world/mappable-clusterer`]);
     return window[`@mappable-world/mappable-clusterer`];
 });
 
