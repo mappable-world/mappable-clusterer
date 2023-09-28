@@ -1,4 +1,4 @@
-import {Vec2, WorldCoordinates} from '@mappable-world/mappable-types/common/types';
+import type {Vec2, WorldCoordinates} from '@mappable-world/mappable-types';
 
 // World at 0 zoom is always 256x256 pixels.
 const worldPixelSize = 256;
@@ -12,7 +12,7 @@ const worldPixelSize = 256;
  * @param dst The vector the result will be stored to.
  * @returns `dst`.
  */
-function divv(a: Vec2, b: Vec2, dst: Vec2 = {x: 0, y: 0} as Vec2): Vec2 {
+function divv<T extends Vec2>(a: T, b: T, dst: T = {x: 0, y: 0} as T): T {
     dst.x = a.x / b.x;
     dst.y = a.y / b.y;
     return dst;
@@ -26,10 +26,10 @@ function divv(a: Vec2, b: Vec2, dst: Vec2 = {x: 0, y: 0} as Vec2): Vec2 {
  * @param dst The vector the result will be stored to.
  * @returns `dst`.
  */
-export function divn(v: Vec2, n: number, dst: Vec2 = {x: 0, y: 0}): Vec2 {
+export function divn<T extends Vec2>(v: T, n: number, dst: Vec2 = {x: 0, y: 0}): T {
     dst.x = v.x / n;
     dst.y = v.y / n;
-    return dst;
+    return dst as T;
 }
 
 export function convertPixelSizeToWorldSize(pixel: Vec2, zoom: number, dst?: Vec2): WorldCoordinates {

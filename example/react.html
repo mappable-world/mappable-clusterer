@@ -27,8 +27,8 @@
 
                 const {MMapClusterer, clusterByGrid} = reactify.module(await mappable.import("@mappable-world/mappable-clusterer@0.0.1"));
                 const {useState, useCallback, useMemo} = React;
-                const initialPoints = getRandomPoints(100, BOUNDS);
-                const gridSizedMethod = clusterByGrid({gridSize: 64})
+                const initialPoints = getRandomPoints(DEFAULT_POINTS_COUNT, BOUNDS);
+                const gridSizedMethod = clusterByGrid({gridSize: CLUSTER_SIZE})
 
                 function App() {
                     const [clusterer, setClusterer] = useState(true);
@@ -64,7 +64,7 @@
 
                     return <React.Fragment>
                         <div className="toolbar">
-                            <input id="pointsCount" defaultValue="100" placeholder="Count"></input>
+                            <input id="pointsCount" defaultValue={DEFAULT_POINTS_COUNT} placeholder="Count"></input>
                             <button type="button" onClick={updatePoints}>Update points</button>
                             <button type="button" onClick={toggleClusterer}>Delete/Add Clusterer</button>
                         </div>
