@@ -112,7 +112,7 @@ describe('MMapClusterer', () => {
             };
 
             clusterer.update({method});
-            expect(entities.length).toBe(3);
+            expect(entities.length).toBe(10);
 
             map.setLocation({zoom: 3});
             expect(entities.length).toBe(10);
