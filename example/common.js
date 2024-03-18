@@ -43,3 +43,9 @@ const getRandomPoints = (count, bounds) =>
         geometry: {coordinates: rnd.point(bounds)},
         properties: {name: 'beer shop'}
     }));
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if (location.search.includes('hide-toolbar')) {
+        document.querySelector('.toolbar').style.display = 'none';
+    }
+});

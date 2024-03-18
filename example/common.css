@@ -40,10 +40,10 @@ body,
     width: var(--radius, 20px);
     height: var(--radius, 20px);
 
-    color: #8a64eb;
+    color: #fff;
     border: 2px solid currentColor;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #313133;
 
     transform: translate(-50%, -50%);
 }
@@ -56,12 +56,6 @@ body,
     display: flex;
     justify-content: center;
     align-items: center;
-
-    width: 70%;
-    height: 70%;
-
-    border-radius: 50%;
-    background-color: currentColor;
 
     transform: translate3d(-50%, -50%, 0);
 }
