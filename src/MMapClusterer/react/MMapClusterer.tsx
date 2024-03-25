@@ -1,6 +1,6 @@
 import type TReact from 'react';
 import type {LngLat, MMapEntity} from '@mappable-world/mappable-types';
-import type {CustomReactify} from '@mappable-world/mappable-types/reactify/reactify';
+import type {CustomReactify, OverrideProps, Prettify} from '@mappable-world/mappable-types/reactify/reactify';
 
 import type {ClustererObject, Feature} from '../interface';
 import type {MMapClusterer as MMapClustererI, MMapClustererProps} from '../MMapClusterer';
@@ -36,12 +36,17 @@ import type {MMapClusterer as MMapClustererI, MMapClustererProps} from '../MMapC
  * ```
  */
 
-type MMapClustererReactifiedProps = Omit<MMapClustererProps, 'marker' | 'cluster'> & {
-    /** Function that returns MMapMarker react component to render marker*/
-    marker: (feature: Feature) => TReact.ReactElement;
-    /** Function that returns MMapMarker react component to render cluster*/
-    cluster: (coordinates: LngLat, features: Feature[]) => TReact.ReactElement;
-};
+type MMapClustererReactifiedProps = Prettify<
+    OverrideProps<
+        MMapClustererProps,
+        {
+            /** Function that returns MMapMarker react component to render marker*/
+            marker: (feature: Feature) => TReact.ReactElement;
+            /** Function that returns MMapMarker react component to render cluster*/
+            cluster: (coordinates: LngLat, features: Feature[]) => TReact.ReactElement;
+        }
+    >
+>;
 
 type MMapClustererImperative = new (props: MMapClustererReactifiedProps) => MMapEntity<MMapClustererReactifiedProps>;
 type MMapClustererR = TReact.ForwardRefExoticComponent<
