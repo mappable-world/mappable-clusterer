@@ -195,10 +195,6 @@ class MMapClusterer extends mappable.MMapComplexEntity<MMapClustererProps, Defau
         this._visibleEntities = nextVisibleEntities;
     }
 
-    protected __implGetDefaultProps(): DefaultProps {
-        return MMapClusterer.defaultProps;
-    }
-
     protected _onAttach(): void {
         this._entitiesCache = {};
         this._visibleEntities = {};
