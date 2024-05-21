@@ -25,7 +25,7 @@
                     MMapMarker
                 } = reactify.module(mappable);
 
-                const {MMapClusterer, clusterByGrid} = reactify.module(await mappable.import("@mappable-world/mappable-clusterer@0.0.1"));
+                const {MMapClusterer, clusterByGrid} = reactify.module(await mappable.import("@mappable-world/mappable-clusterer"));
                 const {useState, useCallback, useMemo} = React;
                 const initialPoints = getRandomPoints(100, BOUNDS);
                 const gridSizedMethod = clusterByGrid({gridSize: 64})

@@ -14,7 +14,7 @@
                 await mappable.ready;
                 const {MMap, MMapDefaultSchemeLayer, MMapLayer, MMapFeatureDataSource} = mappable;
 
-                const {MMapClusterer, clusterByGrid} = await mappable.import('@mappable-world/mappable-clusterer@0.0.1');
+                const {MMapClusterer, clusterByGrid} = await mappable.import('@mappable-world/mappable-clusterer');
 
                 map = new MMap(document.getElementById('app'), {location: LOCATION});
                 map.addChild(new MMapDefaultSchemeLayer())

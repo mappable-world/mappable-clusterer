@@ -28,7 +28,7 @@ type MMapClustererSlots = {
 
 export const MMapClustererVuefyOverride: CustomVuefyFn<MMapClusterer> = (MMapClustererI, props, {vuefy, Vue}) => {
     const MMapClustererV = vuefy.entity(MMapClustererI, props);
-    const MMapCollectionV = vuefy.entity(mappable.MMapCollection, props);
+    const MMapCollectionV = vuefy.entity(mappable.MMapCollection);
     return Vue.defineComponent({
         name: 'MMapClustererContainer',
         props,

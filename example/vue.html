@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Vue example @mappable-world/mappable-clusterer</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+        <script crossorigin src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+        <script src="https://js.api.mappable.world/3.0/?apikey=%APIKEY%&lang=en_US"></script>
+        <script src="common.js"></script>
+        <script>
+            window.map = null;
+
+            main();
+            async function main() {
+                const [mappable3Vue] = await Promise.all([
+                    mappable.import('@mappable-world/mappable-vuefy'),
+                    mappable.ready
+                ]);
+                const vuefy = mappable3Vue.vuefy.bindTo(Vue);
+                const {MMap, MMapDefaultSchemeLayer, MMapLayer, MMapFeatureDataSource, MMapMarker} =
+                    vuefy.module(mappable);
+                const {MMapClusterer, clusterByGrid} = vuefy.module(
+                    await mappable.import('@mappable-world/mappable-clusterer')
+                );
+                const initialPoints = getRandomPoints(100, BOUNDS);
+                const gridSizedMethod = clusterByGrid({gridSize: 64});
+
+                const app = Vue.createApp({
+                    components: {
+                        MMap,
+                        MMapDefaultSchemeLayer,
+                        MMapFeatureDataSource,
+                        MMapLayer,
+                        MMapMarker,
+                        MMapClusterer
+                    },
+                    setup() {
+                        const clusterer = Vue.ref(true);
+                        const points = Vue.ref(initialPoints);
+                        const updatePoints = () => {
+                            points.value = getRandomPoints(pointsCount.value || rndNum(), map.bounds);
+                        };
+                        const toggleClusterer = () => {
+                            clusterer.value = !clusterer.value;
+                        };
+                        const refMap = (ref) => {
+                            window.map = ref?.entity;
+                        };
+                        return {LOCATION, clusterer, points, gridSizedMethod, updatePoints, toggleClusterer, refMap};
+                    },
+                    template: `
+                        <div className="toolbar">
+                            <input id="pointsCount" defaultValue="100" placeholder="Count" />
+                            <button type="button" @click="updatePoints">Update points</button>
+                            <button type="button" @click="toggleClusterer">Delete/Add Clusterer</button>
+                        </div>
+                        <MMap :location="LOCATION" :ref="refMap">
+                            <MMapDefaultSchemeLayer />
+                            <MMapFeatureDataSource id="clusterer-source"/>
+                            <MMapLayer source="clusterer-source" type="markers" :zIndex="1800"/>
+                            <MMapClusterer v-if="clusterer" :method="gridSizedMethod" :features="points">
+                                <template #marker="{feature}">
+                                    <MMapMarker :key="feature.id" :coordinates="feature.geometry.coordinates" source="clusterer-source">
+                                        <img src="./pin.svg" className="pin"/>
+                                    </MMapMarker>
+                                </template>
+                                <template #cluster="{coordinates, features}">
+                                    <MMapMarker
+                                        :key="features[0].id + features.length"
+                                        :coordinates="coordinates"
+                                        source="clusterer-source">
+                                        <div className="circle">
+                                            <div className="circle-content">
+                                                <span className="circle-text">{{features.length}}</span>
+                                            </div>
+                                        </div>
+                                    </MMapMarker>
+                                </template>
+                            </MMapClusterer>
+                        </MMap>`
+                });
+                app.mount('#app');
+            }
+        </script>
+
+        <link rel="stylesheet" href="common.css" />
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+</html>
